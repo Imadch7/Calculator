@@ -135,7 +135,7 @@ public class Calculatrice extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String expression = screen.getText();
-                    float result = opperations.evaluateExpression(expression);
+                    float result = Operations.evaluateExpression(expression);
                     screen.setText(String.valueOf(result));
                 } catch (ArithmeticException | IllegalArgumentException ex) {
                     System.out.println(ex.getMessage());
