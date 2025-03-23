@@ -1,161 +1,135 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.BorderFactory;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.geom.Dimension2D;
+import java.awt.event.ActionListener;
 
 public class Calculatrice extends JFrame {
 
     public Calculatrice() {
+        // Frame setup
         JFrame window = new JFrame("Calculatrice");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(400, 500);
-        window.setLocation(500,150);
+        window.setSize(400, 600);
+        window.setLocationRelativeTo(null); // Center the window on the screen
 
+        // Main panel with BorderLayout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(240, 240, 240)); // Light gray background
+        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Add padding
+
+        // Screen (JTextArea)
         JTextArea screen = new JTextArea();
-        screen.setFont(new Font("Arial", Font.PLAIN, 36));
+        screen.setFont(new Font("Roboto", Font.PLAIN, 36)); // Modern font
         screen.setEditable(false);
-        screen.setSize(370,100);
-        screen.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // Set a rounded border for the JTextArea
-        Border roundedBorder = BorderFactory.createLineBorder(Color.GREEN, 2, true);
-        screen.setBorder(roundedBorder);
-        screen.setLocation(100,10);
-        window.add(screen, BorderLayout.NORTH);
+        screen.setBackground(new Color(255, 255, 255)); // White background
+        screen.setForeground(new Color(50, 50, 50));
+        screen.setBorder(null); // Dark gray text
+        screen.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 2), // Light gray border
+                BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding inside the border
+        ));
 
-        JPanel numberspanel = new JPanel();
-        numberspanel.setLayout(new GridLayout(4, 4, 10, 10));
-        for(int i=9;i>=1;i--){
-            JButton button = new JButton(String.valueOf(i));
+        JPanel screenPanel = new JPanel(new BorderLayout());
+screenPanel.setBackground(new Color(240, 240, 240)); // Match the main panel background
+screenPanel.setBorder(new EmptyBorder(0, 0, 20, 0)); // Add 20px padding at the bottom
+screenPanel.add(screen, BorderLayout.CENTER);
+        mainPanel.add(screenPanel, BorderLayout.NORTH);
+
+        // Buttons panel with GridLayout
+        JPanel buttonsPanel = new JPanel(new GridLayout(4, 4, 10, 10)); // 5 rows, 4 columns, with gaps
+        buttonsPanel.setBackground(new Color(240, 240, 240)); // Light gray background
+
+        // Button labels
+        String[] buttonLabels = {
+                "7", "8", "9", "/",
+                "4", "5", "6", "*",
+                "1", "2", "3", "-",
+                "0", ".", "C", "+"
+        };
+
+        // Create and style buttons
+        for (String label : buttonLabels) {
+            JButton button = createStyledButton(label);
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    screen.setText(screen.getText()+button.getText());
+                    if (label.equals("C")) {
+                        // Clear the screen
+                        screen.setText("");
+                    } else {
+                        // Append the button's text to the screen
+                        screen.setText(screen.getText() + label);
+                    }
                 }
             });
-            button.setFont(new Font("Arial", Font.PLAIN, 13));
-            button.setSize(50,50);
-            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            numberspanel.add(button);
+            buttonsPanel.add(button);
         }
-        // button 0
-        JButton button0 = new JButton("0");
-        button0.addActionListener(new ActionListener() {
+
+        JButton equalsButton = createStyledButton("=");
+        equalsButton.setPreferredSize(new Dimension(400, 70)); // Set preferred size
+        equalsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                screen.setText(screen.getText()+button0.getText());
-            }
-        });
-        button0.setFont(new Font("Arial", Font.PLAIN, 16));
-        button0.setSize(50,50);
-        button0.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        numberspanel.add(button0);
-
-        // button 0
-
-        //buttonC
-        JButton buttonC = new JButton("C");
-        buttonC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                screen.setText("");
-            }
-        });
-        numberspanel.add(buttonC);
-
-        //buttonC
-
-        //button+
-        JButton buttonpl = new JButton("+");
-            buttonpl.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    screen.setText(screen.getText()+buttonpl.getText());
-                }
-            });
-            buttonpl.setFont(new Font("Arial", Font.PLAIN, 16));
-            buttonpl.setSize(50,50);
-            buttonpl.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            numberspanel.add(buttonpl);
-        //button+
-
-        //button-
-        JButton buttonM = new JButton("-");
-            buttonM.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    screen.setText(screen.getText()+buttonM.getText());
-                }
-            });
-            buttonM.setFont(new Font("Arial", Font.PLAIN, 16));
-            buttonM.setSize(50,50);
-            buttonM.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            numberspanel.add(buttonM);
-        //button-
-
-        //button*
-        JButton buttonMUL = new JButton("*");
-            buttonMUL.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    screen.setText(screen.getText()+buttonMUL.getText());
-                }
-            });
-            buttonMUL.setFont(new Font("Arial", Font.PLAIN, 16));
-            buttonMUL.setSize(50,50);
-            buttonMUL.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            numberspanel.add(buttonMUL);
-        //button*
-
-        //button/
-        JButton buttondiv = new JButton("/");
-        buttondiv.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    screen.setText(screen.getText()+buttondiv.getText());
-                }
-            });
-            buttondiv.setFont(new Font("Arial", Font.PLAIN, 16));
-            buttondiv.setSize(50,50);
-            buttondiv.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            numberspanel.add(buttondiv);
-        //button/
-
-        //button=
-        JButton buttonEg = new JButton("=");
-        buttonEg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+                // Evaluate the expression
                 try {
                     String expression = screen.getText();
                     float result = Operations.evaluateExpression(expression);
                     screen.setText(String.valueOf(result));
                 } catch (ArithmeticException | IllegalArgumentException ex) {
-                    System.out.println(ex.getMessage());
+                    screen.setText("Error");
                 }
             }
         });
-        numberspanel.add(buttonEg);
 
-        //button=
+        // Panel for the "=" button
+        JPanel equalsPanel = new JPanel(new BorderLayout());
+        equalsPanel.setBackground(new Color(240, 240, 240)); // Light gray background
+        equalsPanel.setBorder(new EmptyBorder(10, 0, 0, 0)); // Add padding
+        equalsPanel.add(equalsButton, BorderLayout.CENTER);
 
+        // Add equals panel to the main panel
+        mainPanel.add(equalsPanel, BorderLayout.SOUTH);
 
-        //************************************************************************************* */
+        // Add main panel to the window
+        window.add(mainPanel);
+        window.setVisible(true);
 
-        numberspanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        window.add(numberspanel);
-        
+        // Add buttons panel to the main panel
+        mainPanel.add(buttonsPanel, BorderLayout.CENTER);
 
+        // Add main panel to the window
+        window.add(mainPanel);
         window.setVisible(true);
     }
 
+    // Helper method to create styled buttons
+    private JButton createStyledButton(String label) {
+        JButton button = new JButton(label);
+        button.setFont(new Font("Roboto", Font.BOLD, 20)); // Modern font
+        button.setBackground(new Color(50, 150, 250)); // Blue background
+        button.setForeground(Color.WHITE); // White text
+        button.setFocusPainted(false); // Remove focus border
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(30, 120, 200), 2), // Darker blue border
+                BorderFactory.createEmptyBorder(10, 10, 10, 10) // Padding inside the border
+        ));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Hand cursor on hover
+
+        // Add hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(30, 120, 200)); // Darker blue on hover
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(50, 150, 250)); // Restore original color
+            }
+        });
+
+        return button;
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
