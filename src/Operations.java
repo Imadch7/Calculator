@@ -88,13 +88,13 @@ public class Operations {
         return result;
     } 
 
-    public static void main(String[] args) {
-        String expression = "-8 / 2";
-        try {
-            float result = evaluateExpression(expression);
-            System.out.println("Result: " + result);
-        } catch (ArithmeticException | IllegalArgumentException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
+    // public static void main(String[] args) {
+    //     String expression = "-8 / 2";
+    //     try {
+    //         float result = evaluateExpression(expression);
+    //         System.out.println("Result: " + result);
+    //     } catch (ArithmeticException | IllegalArgumentException e) {
+    //         System.err.println("Error: " + e.getMessage());
+    //     }
+    // }
 }
